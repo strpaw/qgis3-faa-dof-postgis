@@ -18,6 +18,16 @@ qgis3-faa-dof-postgis                            # Main project directory
     │   │   script.py.mako
     │   │
     │   └───versions
+    │
+    ├───initial_data                             # Inital data to populate database
+    │       horizontal_acc.csv
+    │       lighting.csv
+    │       marking.csv
+    │       oas.csv
+    │       obstacle_type.csv
+    │       tolerance_uom.csv
+    │       verif_status.csv
+    │       vertical_acc.csv
     └───sql                                      # SQL scripts to manage database
             ddl.sql                              # Setup database (tables) SQL script
             dml.sql                              # SQL script to insert initial data ('dict' tables)
