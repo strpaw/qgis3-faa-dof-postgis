@@ -28,6 +28,11 @@ qgis3-faa-dof-postgis                            # Main project directory
     │       tolerance_uom.csv
     │       verif_status.csv
     │       vertical_acc.csv
+    │ 
+    ├───python_scripts                           # Auxiliary scripts for database setup
+    │       load_countries_states.py             # Populate spatial tables with countries, USA states data
+    │       load_countries_states_config_sample.yml
+    │
     └───sql                                      # SQL scripts to manage database
             ddl.sql                              # Setup database (tables) SQL script
             dml.sql                              # SQL script to insert initial data ('dict' tables)
