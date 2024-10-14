@@ -22,24 +22,492 @@
      <height>571</height>
     </rect>
    </property>
-   <widget class="QWidget" name="tabLoadDataMode">
+   <property name="tabShape">
+    <enum>QTabWidget::Rounded</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tabSingleObstacleMode">
     <attribute name="title">
-     <string>Load data</string>
+     <string>Single obstacle</string>
     </attribute>
-    <widget class="QgsFileWidget" name="mQgsFileWidgetSourceFile">
+    <widget class="QLabel" name="labelCity">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>40</y>
-       <width>1001</width>
-       <height>27</height>
+       <x>350</x>
+       <y>20</y>
+       <width>340</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>City</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditCity">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>45</y>
+       <width>340</width>
+       <height>22</height>
       </rect>
      </property>
     </widget>
+    <widget class="QComboBox" name="comboBoxCountryState">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>45</y>
+       <width>200</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditObstacleIdent">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>45</y>
+       <width>120</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maxLength">
+      <number>6</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelIdent">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>120</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Obstacle Ident</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelCountryState">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>20</y>
+       <width>200</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Country/state</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelHorAcc">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>87</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>H Acc</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelLongitude">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>87</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Longitude</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditLongitude">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>140</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxHorAcc">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>110</y>
+       <width>101</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelLatitude">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>87</y>
+       <width>45</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Latitude</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditLatitude">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>110</y>
+       <width>140</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelAgl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Agl</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditAgl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelAmsl">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>150</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Amsl</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxVertAcc">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>170</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditAmsl">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>170</y>
+       <width>100</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelVertAcc">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>150</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>V Acc</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxLighting">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>230</y>
+       <width>201</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelMarking">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>210</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Marking</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelLighting">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>210</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Lighting</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelObstacleType">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>210</y>
+       <width>91</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Obstacle Type</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxObstacleType">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>230</y>
+       <width>140</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxMarking">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>230</y>
+       <width>180</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxVerificationStatus">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>290</y>
+       <width>140</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditQuantity">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>290</y>
+       <width>113</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelVerificationStatus">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>270</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Verification status</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelQuantity">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>270</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Quantity</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditFAAStudyNumber">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>340</y>
+       <width>130</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maxLength">
+      <number>14</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelFAAStudyNumber">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>320</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>FAA Study Number</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelJulianDate">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>320</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Juian date</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditJulianDate">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>340</y>
+       <width>130</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maxLength">
+      <number>14</number>
+     </property>
+    </widget>
+    <widget class="QDateEdit" name="dateEditValidFrom">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>400</y>
+       <width>110</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelValidFrom">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>380</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Valid from</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>380</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Valid to</string>
+     </property>
+    </widget>
+    <widget class="QDateEdit" name="dateEditValidTo">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>400</y>
+       <width>110</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonUpdate">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>920</x>
+       <y>490</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonInsert">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>490</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Insert</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Load data</string>
+    </attribute>
     <widget class="QLabel" name="labelLoadSourceFile">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>20</y>
        <width>71</width>
        <height>16</height>
@@ -49,7 +517,20 @@
       <string>Source file</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButtonLoadData">
+    <widget class="QgsFileWidget" name="mQgsFileWidgetSourceFile">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>1001</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonLoadData_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>920</x>
@@ -62,11 +543,6 @@
       <string>Load</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tab_2">
-    <attribute name="title">
-     <string>Tab 2</string>
-    </attribute>
    </widget>
   </widget>
   <widget class="QPushButton" name="pushButtonCancel">
@@ -95,6 +571,9 @@
     <string>Open logs</string>
    </property>
   </widget>
+  <zorder>pushButtonCancel</zorder>
+  <zorder>pushButtonOpenLogs</zorder>
+  <zorder>tabWidgetModes</zorder>
  </widget>
  <customwidgets>
   <customwidget>
@@ -103,6 +582,32 @@
    <header>qgsfilewidget.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tabWidgetModes</tabstop>
+  <tabstop>lineEditObstacleIdent</tabstop>
+  <tabstop>comboBoxCountryState</tabstop>
+  <tabstop>lineEditCity</tabstop>
+  <tabstop>lineEditLongitude</tabstop>
+  <tabstop>lineEditLatitude</tabstop>
+  <tabstop>comboBoxHorAcc</tabstop>
+  <tabstop>lineEditAgl</tabstop>
+  <tabstop>lineEditAmsl</tabstop>
+  <tabstop>comboBoxVertAcc</tabstop>
+  <tabstop>comboBoxObstacleType</tabstop>
+  <tabstop>comboBoxMarking</tabstop>
+  <tabstop>comboBoxLighting</tabstop>
+  <tabstop>comboBoxVerificationStatus</tabstop>
+  <tabstop>lineEditQuantity</tabstop>
+  <tabstop>lineEditFAAStudyNumber</tabstop>
+  <tabstop>lineEditJulianDate</tabstop>
+  <tabstop>dateEditValidFrom</tabstop>
+  <tabstop>dateEditValidTo</tabstop>
+  <tabstop>pushButtonInsert</tabstop>
+  <tabstop>pushButtonUpdate</tabstop>
+  <tabstop>pushButtonOpenLogs</tabstop>
+  <tabstop>pushButtonCancel</tabstop>
+  <tabstop>pushButtonLoadData_2</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
