@@ -2,3 +2,4 @@ Pipfile.lock
 .env
 load_countries_states_config.yml
 *.gpkg
+*.zip
