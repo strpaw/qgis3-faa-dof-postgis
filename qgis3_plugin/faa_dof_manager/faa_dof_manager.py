@@ -189,6 +189,8 @@ class faa_dof_manager:
             self.first_start = False
             self.dlg = faa_dof_managerDialog()
 
+            self.dlg.pushButtonCancel.clicked.connect(self.dlg.close)
+
         # show the dialog
         self.dlg.show()
         # Run the dialog event loop
