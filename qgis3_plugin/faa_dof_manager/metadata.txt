@@ -1,0 +1,47 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=FAA DOF Manager
+qgisMinimumVersion=3.0
+description=Manages data from DOF (Digital Obstacle File) provided by FAA (Federal Aviation Administration)
+version=0.1
+author=Paweł Strzelewicz
+email=@
+
+about=Manages data from DOF (Digital Obstacle File) provided by FAA (Federal Aviation Administration)
+
+tracker=http://bugs
+repository=https://github.com/strpaw/qgis3-faa-dof-postgis
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=no
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=python
+
+homepage=https://github.com/strpaw/qgis3-faa-dof-postgis
+category=Plugins
+icon=icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+# plugin_dependencies=
+
+Category of the plugin: Raster, Vector, Database or Web
+# category=
+
+# If the plugin can run on QGIS Server.
+server=False
+

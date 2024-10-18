@@ -5,6 +5,7 @@
 ### [load_countries_states.py](#load_ctry_states)
 ## [Setup with alembic](#setup_alembic)
 ## [Setup with SQL scripts](#setup_sql)
+# [Plugin installation](#plugin_install)
 
 # Project structure <a name=project_structure>
 
@@ -14,34 +15,37 @@
 
 ```
 qgis3-faa-dof-postgis                            # Main project directory
-└───database_setup                               # Scripts, initial data to setup database
-    │   .env_sample                              # Database credentials sample with formatting used by alembic scripts
-    │   alembic.ini
-    │
-    ├───alembic_migrations                       # Alembic migration environment
-    │   │   env.py                               
-    │   │   README
-    │   │   script.py.mako
-    │   │
-    │   └───versions
-    │
-    ├───initial_data                             # Inital data to populate database
-    │       horizontal_acc.csv
-    │       lighting.csv
-    │       marking.csv
-    │       oas.csv
-    │       obstacle_type.csv
-    │       tolerance_uom.csv
-    │       verif_status.csv
-    │       vertical_acc.csv
-    │ 
-    ├───python_scripts                           # Auxiliary scripts for database setup
-    │       load_countries_states.py             # Populate spatial tables with countries, USA states data
-    │       load_countries_states_config_sample.yml
-    │
-    └───sql                                      # SQL scripts to manage database
-            ddl.sql                              # Setup database (tables) SQL script
-            dml.sql                              # SQL script to insert initial data ('dict' tables)
+│   create_plugin_package.ps1                    # PowerShell script to create plugin zip package 
+├───database_setup                               # Scripts, initial data to setup database
+│   │   .env_sample                              # Database credentials sample with formatting used by alembic scripts
+│   │   alembic.ini
+│   │
+│   ├───alembic_migrations                       # Alembic migration environment
+│   │   │   env.py                               
+│   │   │   README
+│   │   │   script.py.mako
+│   │   │
+│   │   └───versions
+│   │
+│   ├───initial_data                             # Inital data to populate database
+│   │       horizontal_acc.csv
+│   │       lighting.csv
+│   │       marking.csv
+│   │       oas.csv
+│   │       obstacle_type.csv
+│   │       tolerance_uom.csv
+│   │       verif_status.csv
+│   │       vertical_acc.csv
+│   │ 
+│   ├───python_scripts                           # Auxiliary scripts for database setup
+│   │       load_countries_states.py             # Populate spatial tables with countries, USA states data
+│   │       load_countries_states_config_sample.yml
+│   │
+│   └───sql                                      # SQL scripts to manage database
+│           ddl.sql                              # Setup database (tables) SQL script
+│           dml.sql                              # SQL script to insert initial data ('dict' tables)
+└───qgis3_plugin
+    └───faa_dof_manager                          #  Plugin directory
 ```
 # Database setup <a name=database_setup>
 
@@ -100,3 +104,16 @@ Execute SQL scripts, using for example pgAdmin:
 
 * `<main project dir>\database_setup>\ddl.sql` (create tables)
 * `<main project dir>\database_setup>\ddl.sql` (populate data)
+
+# Plugin installation <a name=plugin_install>
+
+1. Open `PowerShell`
+2. `cd <main project directory>`
+3. Run script: `.\create_plugin_package.ps1`
+4. Open Plugin dialog windows in QGIS: `Main menu > Plugins > Manage and Install Plugins...`:
+ ![Opeing plugins dialog](/doc_img/plugin_installation/1_plugins_menu.png)
+5. Chose `Install from ZIP`:
+![Install from ZIP option](/doc_img/plugin_installation/2_install_from_ZIP.png)
+
+6. Select ZIP file created in the step 3 and press `Install Plugin` button:
+![Select ZIP and install](/doc_img/plugin_installation/3_select_install.png)
