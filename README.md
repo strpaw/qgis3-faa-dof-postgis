@@ -43,6 +43,7 @@ qgis3-faa-dof-postgis                            # Main project directory
 │   │
 │   └───sql                                      # SQL scripts to manage database
 │           ddl.sql                              # Setup database (tables) SQL script
+│           ddl_views.sql                        # Setup database (views) SQL script
 │           dml.sql                              # SQL script to insert initial data ('dict' tables)
 └───qgis3_plugin
     └───faa_dof_manager                          #  Plugin directory
@@ -96,6 +97,7 @@ FAA DOF database.
 3. Execute commands:
    * `alembic upgrade 8e1` (create db schema)
    * `alembic upgrade 211` (populate tables with initial data, non-spatial tables)
+   * `alembic upgrade f88` (create views)
 4. Load countries, USA states spatial data. See [load_countries_states.py](#load_ctry_states)
 
 ## Setup with SQL scripts <a name=setup_sql>
@@ -104,6 +106,7 @@ Execute SQL scripts, using for example pgAdmin:
 
 * `<main project dir>\database_setup>\ddl.sql` (create tables)
 * `<main project dir>\database_setup>\ddl.sql` (populate data)
+* `<main project dir>\database_setup>\ddl_views.sql` (create views)
 
 # Plugin installation <a name=plugin_install>
 

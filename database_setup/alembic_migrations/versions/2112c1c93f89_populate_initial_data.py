@@ -22,9 +22,6 @@ down_revision: Union[str, None] = '8e1456d1a51e'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
-bind = op.get_bind()
-metadata = sa.MetaData()
-
 
 def get_data(file_name: str) -> list[dict[str, Any]]:
     """Return data to insert from initial data CSV file.
@@ -38,6 +35,8 @@ def get_data(file_name: str) -> list[dict[str, Any]]:
 
 
 def upgrade() -> None:
+    bind = op.get_bind()
+    metadata = sa.MetaData()
     tables = [
         "oas",
         "tolerance_uom",
