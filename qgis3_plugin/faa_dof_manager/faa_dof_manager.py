@@ -21,6 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 """
+import logging
+from pathlib import Path
+
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
@@ -29,6 +32,7 @@ from qgis.PyQt.QtWidgets import QAction
 from .resources import *
 # Import the code for the dialog
 from .faa_dof_manager_dialog import faa_dof_managerDialog
+from .custom_logging import configure_logging
 import os.path
 
 
@@ -66,6 +70,10 @@ class faa_dof_manager:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
+
+        self._log_file = None
+        """Path to the log file"""
+        self._init_logging()
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -179,6 +187,12 @@ class faa_dof_manager:
                 action)
             self.iface.removeToolBarIcon(action)
 
+    def _init_logging(self) -> None:
+        """Initialize plugin logging"""
+        log_dir = Path(self.plugin_dir) / "logs"
+        log_dir.mkdir(parents=True, exist_ok=True)
+        self._log_file = log_dir / "faa_dof_manager.txt"
+        configure_logging(log_file=self._log_file)
 
     def run(self):
         """Run method that performs all the real work"""
