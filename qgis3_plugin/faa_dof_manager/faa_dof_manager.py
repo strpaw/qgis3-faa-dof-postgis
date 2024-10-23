@@ -194,6 +194,10 @@ class faa_dof_manager:
         self._log_file = log_dir / "faa_dof_manager.txt"
         configure_logging(log_file=self._log_file)
 
+    def open_logs(self) -> None:
+        """Open logs in default text editor"""
+        os.startfile(self._log_file)
+
     def run(self):
         """Run method that performs all the real work"""
 
@@ -204,6 +208,7 @@ class faa_dof_manager:
             self.dlg = faa_dof_managerDialog()
 
             self.dlg.pushButtonCancel.clicked.connect(self.dlg.close)
+            self.dlg.pushButtonOpenLogs.clicked.connect(self.open_logs)
 
         # show the dialog
         self.dlg.show()
