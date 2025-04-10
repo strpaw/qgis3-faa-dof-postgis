@@ -11,3 +11,7 @@ class NoLayersError(FAADOFManagerError):
 
 class LayerError(FAADOFManagerError):
     """Risen when required layer is incorrect (e.g.: provider)"""
+
+
+class DBConnectionError(FAADOFManagerError):
+    """Risen when connection to the database cannot be established"""
