@@ -16,18 +16,18 @@ import unittest
 
 from qgis.PyQt.QtGui import QDialogButtonBox, QDialog
 
-from faa_dof_manager_dialog import faa_dof_managerDialog
+from faa_dof_manager_dialog import FAADOFManagerDialog
 
 from utilities import get_qgis_app
 QGIS_APP = get_qgis_app()
 
 
-class faa_dof_managerDialogTest(unittest.TestCase):
+class FAADOFManagerDialogTest(unittest.TestCase):
     """Test dialog works."""
 
     def setUp(self):
         """Runs before each test."""
-        self.dialog = faa_dof_managerDialog(None)
+        self.dialog = FAADOFManagerDialog(None)
 
     def tearDown(self):
         """Runs after each test."""
@@ -49,7 +49,7 @@ class faa_dof_managerDialogTest(unittest.TestCase):
         self.assertEqual(result, QDialog.Rejected)
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(faa_dof_managerDialogTest)
+    suite = unittest.makeSuite(FAADOFManagerDialogTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
 
