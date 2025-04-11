@@ -1,3 +1,6 @@
+__pycache__
+logs
+*.pyc
 Pipfile.lock
 .env
 load_countries_states_config.yml
