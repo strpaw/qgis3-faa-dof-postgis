@@ -21,6 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+from dataclasses import asdict
 import logging
 from pathlib import Path
 
@@ -36,6 +37,10 @@ from .dof_layers import DOFLayers
 from .faa_dof_manager_dialog import faa_dof_managerDialog
 from .custom_logging import configure_logging
 import os.path
+
+from .db_values_map import DBValuesMapping
+from .db_utils import DBUtils
+from .types import DBConnectionSettings
 
 
 class faa_dof_manager:  # pylint: disable=too-many-instance-attributes
@@ -212,6 +217,10 @@ class faa_dof_manager:  # pylint: disable=too-many-instance-attributes
         if self.first_start == True:
             self.first_start = False
             self.dlg = faa_dof_managerDialog()
+            db_setting = self.dof_layers.get_db_settings()
+            db_mapping = DBValuesMapping(db_utils=DBUtils(**asdict(db_setting)))
+            db_mapping.set_all_mapping()
+            self.dlg.set_single_mode_drop_down_lists(db_mapping)
 
             self.dlg.pushButtonCancel.clicked.connect(self.dlg.close)
             self.dlg.pushButtonOpenLogs.clicked.connect(self.open_logs)

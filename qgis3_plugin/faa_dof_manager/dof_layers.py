@@ -5,7 +5,8 @@ import logging
 from qgis.core import (
     QgsDataProvider,
     QgsMapLayer,
-    QgsProject
+    QgsProject,
+    QgsDataSourceUri
 )
 
 from qgis.PyQt.QtWidgets import (
@@ -17,6 +18,7 @@ from .errors import (
     LayerError,
     NoLayersError
 )
+from .types import DBConnectionSettings
 
 
 class DOFLayers:
@@ -97,3 +99,18 @@ class DOFLayers:
         logging.error(msg)
         QMessageBox.critical(QWidget(), "Message", msg)
         return False
+
+    def get_db_settings(self) -> DBConnectionSettings:
+        """Return database connection settings based on the obstacle layer.
+
+        :return: database connection settings (host, database, credentials)
+        """
+        layer = self.layers["obstacle"]
+        provider = layer.dataProvider()
+        uri = QgsDataSourceUri(provider.dataSourceUri())
+        return DBConnectionSettings(
+            host=uri.host(),
+            database=uri.database(),
+            user=uri.username(),
+            password=uri.password()
+        )

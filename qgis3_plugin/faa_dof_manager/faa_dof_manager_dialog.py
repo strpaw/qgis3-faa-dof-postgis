@@ -26,6 +26,8 @@ import os
 
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
+from .db_values_map import DBValuesMapping
+
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -42,3 +44,17 @@ class faa_dof_managerDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+
+    def set_single_mode_drop_down_lists(self, db_mapping: DBValuesMapping) -> None:
+        """Fill in drop down list control UI elements with 'human' friendly database value that are used
+        to determine primary/foreign keys to update/insert obstacle data
+
+        :param db_mapping: instance of DBValuesMapping class with database values mapping fetched from database
+        """
+        self.comboBoxCountryState.addItems(db_mapping.oas)
+        self.comboBoxHorAcc.addItems(db_mapping.hor_acc)
+        self.comboBoxVertAcc.addItems(db_mapping.vert_acc)
+        self.comboBoxObstacleType.addItems(db_mapping.obstacle_type.keys())
+        self.comboBoxMarking.addItems(db_mapping.marking)
+        self.comboBoxLighting.addItems(db_mapping.lighting.keys())
+        self.comboBoxVerificationStatus.addItems(db_mapping.verification_status)
