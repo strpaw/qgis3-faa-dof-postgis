@@ -18,7 +18,7 @@ from qgis.PyQt.QtGui import QIcon
 
 
 
-class faa_dof_managerDialogTest(unittest.TestCase):
+class FAADOFManagerDialogTest(unittest.TestCase):
     """Test rerources work."""
 
     def setUp(self):

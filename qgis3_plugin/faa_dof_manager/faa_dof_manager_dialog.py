@@ -34,10 +34,12 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'faa_dof_manager_dialog_base.ui'))
 
 
-class faa_dof_managerDialog(QtWidgets.QDialog, FORM_CLASS):
+class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
+    """Plugin dialog window dialog implementation."""
+
     def __init__(self, parent=None):
         """Constructor."""
-        super(faa_dof_managerDialog, self).__init__(parent)
+        super().__init__(parent)
         # Set up the user interface from Designer through FORM_CLASS.
         # After self.setupUi() you can access any designer object by doing
         # self.<objectname>, and you can use autoconnect slots - see
