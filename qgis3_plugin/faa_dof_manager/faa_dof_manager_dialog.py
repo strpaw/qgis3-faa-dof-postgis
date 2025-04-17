@@ -37,7 +37,9 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
     """Plugin dialog window dialog implementation."""
 
-    def __init__(self, parent=None):
+    def __init__(self,
+                 db_mapping: DBValuesMapping,
+                 parent=None):
         """Constructor."""
         super().__init__(parent)
         # Set up the user interface from Designer through FORM_CLASS.
@@ -46,17 +48,16 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+        self.db_mapping = db_mapping
 
-    def set_single_mode_drop_down_lists(self, db_mapping: DBValuesMapping) -> None:
+    def set_single_mode_drop_down_lists(self) -> None:
         """Fill in drop down list control UI elements with 'human' friendly database value that are used
-        to determine primary/foreign keys to update/insert obstacle data
-
-        :param db_mapping: instance of DBValuesMapping class with database values mapping fetched from database
+        to determine primary/foreign keys to update/insert obstacle data.
         """
-        self.comboBoxCountryState.addItems(db_mapping.oas)
-        self.comboBoxHorAcc.addItems(db_mapping.hor_acc)
-        self.comboBoxVertAcc.addItems(db_mapping.vert_acc)
-        self.comboBoxObstacleType.addItems(db_mapping.obstacle_type.keys())
-        self.comboBoxMarking.addItems(db_mapping.marking)
-        self.comboBoxLighting.addItems(db_mapping.lighting.keys())
-        self.comboBoxVerificationStatus.addItems(db_mapping.verification_status)
+        self.comboBoxCountryState.addItems(self.db_mapping.oas)
+        self.comboBoxHorAcc.addItems(self.db_mapping.hor_acc)
+        self.comboBoxVertAcc.addItems(self.db_mapping.vert_acc)
+        self.comboBoxObstacleType.addItems(self.db_mapping.obstacle_type.keys())
+        self.comboBoxMarking.addItems(self.db_mapping.marking)
+        self.comboBoxLighting.addItems(self.db_mapping.lighting.keys())
+        self.comboBoxVerificationStatus.addItems(self.db_mapping.verification_status)
