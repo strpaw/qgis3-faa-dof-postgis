@@ -15,3 +15,7 @@ class LayerError(FAADOFManagerError):
 
 class DBConnectionError(FAADOFManagerError):
     """Risen when connection to the database cannot be established"""
+
+
+class ObstacleNotFoundError(FAADOFManagerError):
+    """Risen when obstacle not found in database"""
