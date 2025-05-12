@@ -34,6 +34,7 @@ def downgrade() -> None:
         "vw_horizontal_acc",
         "vw_lighting",
         "vw_marking",
+        "vw_obstacle",
         "vw_obstacle_type",
         "vw_states_countries",
         "vw_verif_status",

@@ -213,11 +213,16 @@ class FAADOFManager:  # pylint: disable=too-many-instance-attributes
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
         if self.first_start:
             self.first_start = False
-            self.dlg = FAADOFManagerDialog()
             db_setting = self.dof_layers.get_db_settings()
-            db_mapping = DBValuesMapping(db_utils=DBUtils(**asdict(db_setting)))
+            db_utils = DBUtils(**asdict(db_setting))
+            db_mapping = DBValuesMapping(db_utils=db_utils)
             db_mapping.set_all_mapping()
-            self.dlg.set_single_mode_drop_down_lists(db_mapping)
+
+            self.dlg = FAADOFManagerDialog(
+                db_mapping=db_mapping,
+                db_utils=db_utils
+            )
+            self.dlg.set_single_mode_drop_down_lists()
 
             self.dlg.pushButtonCancel.clicked.connect(self.dlg.close)
             self.dlg.pushButtonOpenLogs.clicked.connect(self.open_logs)

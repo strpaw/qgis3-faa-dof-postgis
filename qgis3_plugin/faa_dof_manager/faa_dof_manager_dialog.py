@@ -21,12 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import annotations
 
+import logging
 import os
+from typing import Any
 
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
+from .errors import ObstacleNotFoundError
 from .db_values_map import DBValuesMapping
+from .db_utils import DBUtils
 
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
@@ -37,7 +42,10 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
     """Plugin dialog window dialog implementation."""
 
-    def __init__(self, parent=None):
+    def __init__(self,
+                 db_mapping: DBValuesMapping,
+                 db_utils: DBUtils,
+                 parent=None):
         """Constructor."""
         super().__init__(parent)
         # Set up the user interface from Designer through FORM_CLASS.
@@ -46,17 +54,71 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+        self.db_mapping = db_mapping
+        self.db_utils = db_utils
+        self.lineEditObstacleIdent.editingFinished.connect(self.load_single_obstacle)
 
-    def set_single_mode_drop_down_lists(self, db_mapping: DBValuesMapping) -> None:
+    def set_single_mode_drop_down_lists(self) -> None:
         """Fill in drop down list control UI elements with 'human' friendly database value that are used
-        to determine primary/foreign keys to update/insert obstacle data
-
-        :param db_mapping: instance of DBValuesMapping class with database values mapping fetched from database
+        to determine primary/foreign keys to update/insert obstacle data.
         """
-        self.comboBoxCountryState.addItems(db_mapping.oas)
-        self.comboBoxHorAcc.addItems(db_mapping.hor_acc)
-        self.comboBoxVertAcc.addItems(db_mapping.vert_acc)
-        self.comboBoxObstacleType.addItems(db_mapping.obstacle_type.keys())
-        self.comboBoxMarking.addItems(db_mapping.marking)
-        self.comboBoxLighting.addItems(db_mapping.lighting.keys())
-        self.comboBoxVerificationStatus.addItems(db_mapping.verification_status)
+        self.comboBoxCountryState.addItems(self.db_mapping.oas)
+        self.comboBoxHorAcc.addItems(self.db_mapping.hor_acc)
+        self.comboBoxVertAcc.addItems(self.db_mapping.vert_acc)
+        self.comboBoxObstacleType.addItems(self.db_mapping.obstacle_type.keys())
+        self.comboBoxMarking.addItems(self.db_mapping.marking)
+        self.comboBoxLighting.addItems(self.db_mapping.lighting.keys())
+        self.comboBoxVerificationStatus.addItems(self.db_mapping.verification_status)
+
+    def fetch_single_obstacle(self,
+                              ident: str,
+                              ctry_state_name: str) -> dict[str, Any] | Exception:
+        """Fetch data for single obstacle.
+
+        :param ident: ident of the obstacle
+        :param ctry_state_name: ctry/state name of the obstacle
+        :return: obstacle data from view dof.vw_obstacle
+        """
+        oas_code = self.db_mapping.oas[ctry_state_name]
+        logging.info(f"Fetching data for obstacle: ident {ident}, country/state {ctry_state_name}, oas_code {oas_code}")
+        query = (f"select *\n"
+                 f"from dof.vw_obstacle\n"
+                 f"where oas_code = '{oas_code}'\n"
+                 f"      and obst_number = '{ident}';")
+        data = self.db_utils.select(query=query)
+        logging.info(data)
+        if not data:
+            logging.info("No obstacle found")
+            raise ObstacleNotFoundError
+
+        return data[0]
+
+    def load_single_obstacle(self) -> None:
+        """Load single obstacle data into plugin UI from database."""
+        ident = self.lineEditObstacleIdent.text()
+        ctry_state_name = self.comboBoxCountryState.currentText()
+
+        try:
+            data = self.fetch_single_obstacle(ident=ident,
+                                              ctry_state_name=ctry_state_name)
+        except ObstacleNotFoundError:
+            logging.info("No obstacle found")
+        else:
+            logging.info(f"Fetched data {data}")
+            self.lineEditCity.setText(data["city"])
+            lat_dms, lon_dms = data["latlon_dms"].split(" ")
+            self.lineEditLongitude.setText(lat_dms)
+            self.lineEditLatitude.setText(lon_dms)
+            self.comboBoxHorAcc.setCurrentText(data["hor_acc"])
+            self.lineEditAgl.setText(str(data["agl"]))
+            self.lineEditAmsl.setText(str(data["amsl"]))
+            self.comboBoxVertAcc.setCurrentText(data["vert_acc"])
+            self.comboBoxObstacleType.setCurrentText(data["obst_type_desc"])
+            self.comboBoxMarking.setCurrentText(data["marking_desc"])
+            self.comboBoxLighting.setCurrentText(data["lighting_desc"])
+            self.comboBoxVerificationStatus.setCurrentText(data["verif_status_desc"])
+            self.lineEditQuantity.setText(str(data["quantity"]))
+            self.lineEditFAAStudyNumber.setText(data["faa_study_number"])
+            self.lineEditJulianDate.setText(data["julian_date"])
+            self.dateEditValidFrom.setDate(data["valid_from"])
+            self.dateEditValidTo.setDate(data["valid_to"])
