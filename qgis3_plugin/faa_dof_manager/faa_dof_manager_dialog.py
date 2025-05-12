@@ -121,5 +121,6 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
             self.lineEditQuantity.setText(str(data["quantity"]))
             self.lineEditFAAStudyNumber.setText(data["faa_study_number"])
             self.lineEditJulianDate.setText(data["julian_date"])
+            self.comboBoxAction.setCurrentText(data["action"])
             self.dateEditValidFrom.setDate(data["valid_from"])
             self.dateEditValidTo.setDate(data["valid_to"])
