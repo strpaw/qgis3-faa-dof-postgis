@@ -69,6 +69,7 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
         self.comboBoxMarking.addItems(self.db_mapping.marking)
         self.comboBoxLighting.addItems(self.db_mapping.lighting.keys())
         self.comboBoxVerificationStatus.addItems(self.db_mapping.verification_status)
+        self.comboBoxAction.addItems(["A", "C"])
 
     def fetch_single_obstacle(self,
                               ident: str,
