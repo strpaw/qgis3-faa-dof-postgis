@@ -19,3 +19,15 @@ class DBConnectionError(FAADOFManagerError):
 
 class ObstacleNotFoundError(FAADOFManagerError):
     """Risen when obstacle not found in database"""
+
+
+class CoordinateError(FAADOFManagerError):
+    """Risen when coordinate has error os is in not supported format"""
+
+
+class MissingRequiredValueError(FAADOFManagerError):
+    """Risen when required value is not entered by user"""
+
+
+class NumberExpectedError(FAADOFManagerError):
+    """Risen when value is not a number"""
