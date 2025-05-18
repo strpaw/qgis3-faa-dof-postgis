@@ -27,15 +27,23 @@ import logging
 import os
 from typing import Any
 
+from qgis.core import (
+    QgsDataSourceUri,
+    QgsFeature,
+    QgsGeometry,
+    QgsPointXY
+)
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import (
     QDialog,
     QMessageBox,
     QWidget
 )
+
 from .errors import ObstacleNotFoundError
 from .db_values_map import DBValuesMapping
 from .db_utils import DBUtils
+from .dof_layers import DOFLayers
 from .obstacle_data_validator import validate_obstacle
 
 
@@ -50,6 +58,7 @@ class FAADOFManagerDialog(QDialog, FORM_CLASS):
     def __init__(self,
                  db_mapping: DBValuesMapping,
                  db_utils: DBUtils,
+                 layers: DOFLayers,
                  parent=None):
         """Constructor."""
         super().__init__(parent)
@@ -61,6 +70,7 @@ class FAADOFManagerDialog(QDialog, FORM_CLASS):
         self.setupUi(self)
         self.db_mapping = db_mapping
         self.db_utils = db_utils
+        self.layers = layers
         self.lineEditObstacleIdent.editingFinished.connect(self.load_single_obstacle)
         self.pushButtonInsert.clicked.connect(self.insert_single_obstacle)
 
@@ -166,3 +176,21 @@ class FAADOFManagerDialog(QDialog, FORM_CLASS):
         except ValueError as e:
             QMessageBox.critical(QWidget(), "Message", str(e))
             return
+
+        obstacle_lyr = self.layers.layers["obstacle"]
+        feat = QgsFeature(obstacle_lyr.fields())
+        feat.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(data["lon"], data["lat"])))
+
+        for field, value in data.items():
+            if field in ["lon", "lat"]:
+                continue
+            feat.setAttribute(field, value)
+
+        # Set insert_user value separately, as this field is not in the plugin dialog graphical user interface
+        provider = obstacle_lyr.dataProvider()
+        uri = QgsDataSourceUri(provider.dataSourceUri())
+        feat.setAttribute("insert_user", uri.username())
+
+        obstacle_lyr.startEditing()
+        obstacle_lyr.dataProvider().addFeatures([feat])
+        obstacle_lyr.commitChanges(stopEditing=True)
