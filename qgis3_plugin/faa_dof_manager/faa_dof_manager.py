@@ -220,7 +220,8 @@ class FAADOFManager:  # pylint: disable=too-many-instance-attributes
 
             self.dlg = FAADOFManagerDialog(
                 db_mapping=db_mapping,
-                db_utils=db_utils
+                db_utils=db_utils,
+                layers=self.dof_layers
             )
             self.dlg.set_single_mode_drop_down_lists()
 

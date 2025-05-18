@@ -27,11 +27,24 @@ import logging
 import os
 from typing import Any
 
+from qgis.core import (
+    QgsDataSourceUri,
+    QgsFeature,
+    QgsGeometry,
+    QgsPointXY
+)
 from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QMessageBox,
+    QWidget
+)
+
 from .errors import ObstacleNotFoundError
 from .db_values_map import DBValuesMapping
 from .db_utils import DBUtils
+from .dof_layers import DOFLayers
+from .obstacle_data_validator import validate_obstacle
 
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
@@ -39,12 +52,13 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'faa_dof_manager_dialog_base.ui'))
 
 
-class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
+class FAADOFManagerDialog(QDialog, FORM_CLASS):
     """Plugin dialog window dialog implementation."""
 
     def __init__(self,
                  db_mapping: DBValuesMapping,
                  db_utils: DBUtils,
+                 layers: DOFLayers,
                  parent=None):
         """Constructor."""
         super().__init__(parent)
@@ -56,7 +70,9 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
         self.setupUi(self)
         self.db_mapping = db_mapping
         self.db_utils = db_utils
+        self.layers = layers
         self.lineEditObstacleIdent.editingFinished.connect(self.load_single_obstacle)
+        self.pushButtonInsert.clicked.connect(self.insert_single_obstacle)
 
     def set_single_mode_drop_down_lists(self) -> None:
         """Fill in drop down list control UI elements with 'human' friendly database value that are used
@@ -69,6 +85,7 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
         self.comboBoxMarking.addItems(self.db_mapping.marking)
         self.comboBoxLighting.addItems(self.db_mapping.lighting.keys())
         self.comboBoxVerificationStatus.addItems(self.db_mapping.verification_status)
+        self.comboBoxAction.addItems(["A", "C"])
 
     def fetch_single_obstacle(self,
                               ident: str,
@@ -107,8 +124,8 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
             logging.info(f"Fetched data {data}")
             self.lineEditCity.setText(data["city"])
             lat_dms, lon_dms = data["latlon_dms"].split(" ")
-            self.lineEditLongitude.setText(lat_dms)
-            self.lineEditLatitude.setText(lon_dms)
+            self.lineEditLongitude.setText(lon_dms)
+            self.lineEditLatitude.setText(lat_dms)
             self.comboBoxHorAcc.setCurrentText(data["hor_acc"])
             self.lineEditAgl.setText(str(data["agl"]))
             self.lineEditAmsl.setText(str(data["amsl"]))
@@ -120,5 +137,60 @@ class FAADOFManagerDialog(QtWidgets.QDialog, FORM_CLASS):
             self.lineEditQuantity.setText(str(data["quantity"]))
             self.lineEditFAAStudyNumber.setText(data["faa_study_number"])
             self.lineEditJulianDate.setText(data["julian_date"])
+            self.comboBoxAction.setCurrentText(data["action"])
             self.dateEditValidFrom.setDate(data["valid_from"])
             self.dateEditValidTo.setDate(data["valid_to"])
+
+    def get_single_obstacle_from_gui(self) -> dict[str, Any]:
+        """Return single obstacle data from plugin GUI 'single obstacle mode'
+
+        :return: single obstacle data
+        """
+        return {
+            "oas_code": self.db_mapping.oas[self.comboBoxCountryState.currentText()],
+            "obst_number": self.lineEditObstacleIdent.text().strip(),
+            "verif_status_code": self.db_mapping.verification_status[self.comboBoxVerificationStatus.currentText()],
+            "type_id": self.db_mapping.obstacle_type[self.comboBoxObstacleType.currentText()],
+            "lighting_code": self.db_mapping.lighting[self.comboBoxLighting.currentText()],
+            "marking_code": self.db_mapping.marking[self.comboBoxMarking.currentText()],
+            "hor_acc_code": self.db_mapping.hor_acc[self.comboBoxHorAcc.currentText()],
+            "vert_acc_code": self.db_mapping.vert_acc[self.comboBoxVertAcc.currentText()],
+            "city": self.lineEditCity.text().strip(),
+            "quantity": self.lineEditQuantity.text().strip(),
+            "agl": self.lineEditAgl.text().strip(),
+            "amsl": self.lineEditAmsl.text().strip(),
+            "faa_study_number": self.lineEditFAAStudyNumber.text().strip(),
+            "action": self.comboBoxAction.currentText(),
+            "julian_date": self.lineEditJulianDate.text().strip(),
+            "valid_from": self.dateEditValidFrom.date().toString("yyyy-MM-dd"),
+            "valid_to": self.dateEditValidTo.date().toString("yyyy-MM-dd"),
+            "lon": self.lineEditLongitude.text().strip(),
+            "lat": self.lineEditLatitude.text().strip()
+        }
+
+    def insert_single_obstacle(self) -> None:
+        """Insert obstacle from data in 'single obstacle mode'"""
+        data = self.get_single_obstacle_from_gui()
+        try:
+            data = validate_obstacle(data)
+        except ValueError as e:
+            QMessageBox.critical(QWidget(), "Message", str(e))
+            return
+
+        obstacle_lyr = self.layers.layers["obstacle"]
+        feat = QgsFeature(obstacle_lyr.fields())
+        feat.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(data["lon"], data["lat"])))
+
+        for field, value in data.items():
+            if field in ["lon", "lat"]:
+                continue
+            feat.setAttribute(field, value)
+
+        # Set insert_user value separately, as this field is not in the plugin dialog graphical user interface
+        provider = obstacle_lyr.dataProvider()
+        uri = QgsDataSourceUri(provider.dataSourceUri())
+        feat.setAttribute("insert_user", uri.username())
+
+        obstacle_lyr.startEditing()
+        obstacle_lyr.dataProvider().addFeatures([feat])
+        obstacle_lyr.commitChanges(stopEditing=True)
