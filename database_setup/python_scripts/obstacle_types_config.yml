@@ -1,0 +1,8 @@
+# Line number of headers
+skip_rows: 4
+# FAA obstacle data (dat) file encoding (e.g.: utf-8)
+encoding: "utf-8"
+# Columns for obstacle type
+obst_type_field:
+  start: 62
+  end: 80

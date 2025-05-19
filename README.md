@@ -3,6 +3,7 @@
 ## [Notes](#database_setup_notes)
 ## [Auxiliary scripts](#aux_scripts)
 ### [load_countries_states.py](#load_ctry_states)
+### [obstacle_types.py](#obstacle_types)
 ## [Setup with alembic](#setup_alembic)
 ## [Setup with SQL scripts](#setup_sql)
 # [Plugin installation](#plugin_install)
@@ -87,6 +88,31 @@ FAA DOF database.
 1. `cd <main project dir>\database_setup\scripts`
 2. Create and edit configuration file `load_countries_states_config.yml`, see `load_countries_states_config.yml` for more information:
 3. Run `python load_countries_states.py`, use `python load_countries_states.py - h` for more information
+
+
+### obstacle_types.py <a name=obstacle_types>
+
+#### Purpose
+
+Script to get obstacle types from DOF.dat file.
+
+#### Input
+
+* obstacle data file, the whole file for all states/countries (DOF.dat)
+
+### Output
+
+* CSV file with unique obstacle types get from input file
+
+#### Usage
+
+> Notes
+> * script uses `obstacle_types_config.yml` configuration file which must be in the directory when script is executed
+> * script uses `DOF.dat` data file which must be in the directory when script is executed
+
+1. `cd <main project dir>\database_setup\scripts`
+2. Edit configuration file `obstacle_types_config.yml`
+3. Run `python obstacle_types.py`
 
 ## Setup with alembic <a name=setup_alembic>
 
