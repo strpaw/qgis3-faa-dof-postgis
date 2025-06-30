@@ -149,6 +149,14 @@ def upgrade() -> None:
         schema=SCHEMA
     )
 
+    op.create_table(
+        "dof_conf",
+        sa.Column("file_type", sa.CHAR(3), primary_key=True),
+        sa.Column("revision_date", sa.Date, nullable=False),
+        sa.Column("settings", sa.JSON, nullable=False),
+        schema=SCHEMA
+    )
+
 
 def downgrade() -> None:
     op.drop_table("obstacle", schema=SCHEMA)
@@ -162,3 +170,4 @@ def downgrade() -> None:
     op.drop_table("horizontal_acc", schema=SCHEMA)
     op.drop_table("vertical_acc", schema=SCHEMA)
     op.drop_table("tolerance_uom", schema=SCHEMA)
+    op.drop_table("dof_conf", schema=SCHEMA)
