@@ -197,3 +197,32 @@ insert into dof.obstacle_type (type) values
 insert into dof.verif_status (code, description) values
 	('O', 'verified'),
 	('U', 'unverified');
+
+insert into dof.dof_conf (file_type, revision_date, settings) values
+(
+    'csv',
+    '2019-09-08',
+    '{
+      "csv_table_map": {
+        "VERIFIED STATUS": "verif_status_code",
+        "CITY": "city",
+        "QUANTITY": "quantity",
+        "AGL": "agl",
+        "AMSL": "amsl",
+        "LIGHTING": "lighting_code",
+        "MARKING": "marking_code",
+        "FAA STUDY": "faa_study_number",
+        "ACTION": "action",
+        "JDATE": "julian_date"
+      },
+      "coordinates_map": {
+        "LATDEC": "lat",
+        "LONDEC": "lon"
+      },
+      "parsed_map": {
+        "oas_ident": "OAS",
+        "accuracy": "ACCURACY",
+        "obstacle_type": "TYPE"
+      }
+    }'
+);
