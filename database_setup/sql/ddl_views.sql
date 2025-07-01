@@ -101,7 +101,7 @@ as
 		   julian_date,
 		   valid_from,
 		   valid_to,
-		   ST_AsLatLonText(location, 'D-M-S.SSSC') as latlon_dms
+		   ST_AsLatLonText(location::geometry, 'D-M-S.SSSC') as latlon_dms
 	from dof.obstacle o
 		 join dof.oas on oas.code = o.oas_code
 		 join dof.verif_status as vs on vs.code = o.verif_status_code
