@@ -550,7 +550,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButtonLoadData_2">
+    <widget class="QPushButton" name="pushButtonLoadData">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -629,7 +629,7 @@
   <tabstop>pushButtonUpdate</tabstop>
   <tabstop>pushButtonOpenLogs</tabstop>
   <tabstop>pushButtonCancel</tabstop>
-  <tabstop>pushButtonLoadData_2</tabstop>
+  <tabstop>pushButtonLoadData</tabstop>
  </tabstops>
  <resources/>
  <connections/>

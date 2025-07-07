@@ -53,6 +53,41 @@ def upgrade() -> None:
         op.bulk_insert(tbl, get_data(f"{tbl_name}.csv"))
 
 
+    tbl_dof_conf = sa.Table("dof_conf", metadata, schema=SCHEMA, autoload_with=bind)
+    op.bulk_insert(
+        tbl_dof_conf,
+        [
+            {
+                "file_type": "csv",
+                "revision_date": "2019-09-08",
+                "settings": {
+                  "csv_table_map": {
+                    "VERIFIED STATUS": "verif_status_code",
+                    "CITY": "city",
+                    "QUANTITY": "quantity",
+                    "AGL": "agl",
+                    "AMSL": "amsl",
+                    "LIGHTING": "lighting_code",
+                    "MARKING": "marking_code",
+                    "FAA STUDY": "faa_study_number",
+                    "ACTION": "action",
+                    "JDATE": "julian_date"
+                  },
+                  "coordinates_map": {
+                    "LATDEC": "lat",
+                    "LONDEC": "lon"
+                  },
+                  "parsed_map": {
+                    "oas_ident": "OAS",
+                    "accuracy": "ACCURACY",
+                    "obstacle_type": "TYPE"
+                  }
+                }
+            }
+        ]
+    )
+
+
 def downgrade() -> None:
     tables = [
         f"{SCHEMA}.oas",
@@ -63,6 +98,7 @@ def downgrade() -> None:
         f"{SCHEMA}.marking",
         f"{SCHEMA}.obstacle_type",
         f"{SCHEMA}.verif_status"
+        f"{SCHEMA}.dof_conf"
     ]
     for tbl in tables:
         op.execute(f"TRUNCATE TABLE {tbl} CASCADE;")

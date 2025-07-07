@@ -88,3 +88,10 @@ create table dof.obstacle (
 	foreign key (hor_acc_code) references dof.horizontal_acc(code),
 	foreign key (vert_acc_code) references dof.vertical_acc(code)
 );
+
+
+create table dof.dof_conf (
+    file_type character(3) primary key,
+    revision_date date not null,
+    settings json not null
+);
