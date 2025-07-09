@@ -7,6 +7,7 @@ import geopandas as gpd
 import pandas as pd
 from sqlalchemy import create_engine
 
+from .coordinates import dms_to_dd
 from .db_utils import DBUtils
 
 OasCode = str
@@ -145,3 +146,46 @@ def load_csv(
     load_data(df=df,
               db_utils=db_utils)
     logging.info("Number of rows loaded into database: %d",len(df))
+
+
+def load_dat(
+        path: Path,
+        db_utils: DBUtils,
+        obstacle_type_mapping: dict[str, int]
+) -> None:
+    """Load DOF DAT file into PostgreSQL database.
+
+    :param path: path to the DOF file
+    :param db_utils: instance of DBUtils class
+    :param obstacle_type_mapping: mapping between obstacle type map from DOF data and obstacle id in database table
+    """
+    logging.info("Loading obstacles from DAT file (path: %s) initiated.", path)
+    dat_config = db_utils.select(query="select settings\n"
+                                       "from dof.dof_conf\n"
+                                       "where file_type = 'dat';")[0][0]["fields"]
+
+    dat_config = {
+        field_name: (field_extent[0] - 1, field_extent[1])
+        for field_name, field_extent
+        in dat_config.items()
+    }
+
+    logging.info("Preparing data...")
+    df = pd.read_fwf(
+        path,
+        sep="\s+",
+        skiprows=4,
+        colspecs=list(dat_config.values()),
+        names=dat_config.keys(),
+        dtype={ "obst_number": str}
+    )
+    df["lon"] = df.apply(lambda row: dms_to_dd(row["lon_src"], 180), axis=1)
+    df["lat"] = df.apply(lambda row: dms_to_dd(row["lat_src"], 90), axis=1)
+    df.drop(columns=["lon_src", "lat_src"], inplace=True)
+
+    df["type_id"] = df.apply(lambda row: obstacle_type_mapping[row["obst_type"]], axis=1)
+    df.drop(columns=["obst_type"], inplace=True)
+
+    df.to_csv("dof_dat_parsed.csv", index=False)
+    load_data(df=df,
+              db_utils=db_utils)

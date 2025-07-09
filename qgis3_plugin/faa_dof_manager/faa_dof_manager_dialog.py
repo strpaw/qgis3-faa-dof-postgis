@@ -46,7 +46,10 @@ from .db_values_map import DBValuesMapping
 from .db_utils import DBUtils
 from .dof_layers import DOFLayers
 from .obstacle_data_validator import validate_obstacle
-from .load_dof import load_csv
+from .load_dof import (
+    load_csv,
+    load_dat
+)
 
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
@@ -75,7 +78,7 @@ class FAADOFManagerDialog(QDialog, FORM_CLASS):
         self.layers = layers
         self.lineEditObstacleIdent.editingFinished.connect(self.load_single_obstacle)
         self.pushButtonInsert.clicked.connect(self.insert_single_obstacle)
-        self.mQgsFileWidgetSourceFile.setFilter("*.csv")
+        self.mQgsFileWidgetSourceFile.setFilter("*.csv, *.dat")
         self.pushButtonLoadData.clicked.connect(self.load_dof_data)
 
     def set_single_mode_drop_down_lists(self) -> None:
@@ -207,10 +210,16 @@ class FAADOFManagerDialog(QDialog, FORM_CLASS):
 
         dof_path = Path(self.mQgsFileWidgetSourceFile.filePath())
         try:
-            load_csv(
-                path=dof_path,
-                db_utils=self.db_utils,
-                obstacle_type_mapping=self.db_mapping.obstacle_type)
+            if dof_path.suffix.lower() == ".csv":
+                load_csv(
+                    path=dof_path,
+                    db_utils=self.db_utils,
+                    obstacle_type_mapping=self.db_mapping.obstacle_type)
+            elif dof_path.suffix.lower() == ".dat":
+                load_dat(
+                    path=dof_path,
+                    db_utils=self.db_utils,
+                    obstacle_type_mapping=self.db_mapping.obstacle_type)
         except Exception as e:
             logging.exception("Error while loading data:\n %s", e)
             QMessageBox.critical(QWidget(), "Message", "Error while loading DOF.\nCheck log for details.")
