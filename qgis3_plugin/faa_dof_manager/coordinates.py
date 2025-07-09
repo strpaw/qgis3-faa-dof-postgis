@@ -22,7 +22,7 @@ def dms_to_dd(coord: str,
         raise CoordinateError
 
     try:
-        d, m, s = coord[:-1].split("-")
+        d, m, s = coord[:-1].split(" ")
         d = int(d)
         m = int(m)
         s = float(s)
