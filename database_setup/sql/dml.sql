@@ -225,4 +225,30 @@ insert into dof.dof_conf (file_type, revision_date, settings) values
         "obstacle_type": "TYPE"
       }
     }'
+),
+(
+    'dat',
+    '2019-09-08',
+    '{
+        "fields":
+           {
+             "oas_code": [1, 2],
+             "obst_number": [4, 9],
+             "verif_status_code": [11, 11],
+             "city": [19, 34],
+             "lat_src": [36, 47],
+             "lon_src": [49, 61],
+             "obst_type": [63, 80],
+             "quantity": [82, 82],
+             "agl": [84, 88],
+             "amsl": [90, 94],
+             "lighting_code": [96, 96],
+             "hor_acc_code": [98, 98],
+             "vert_acc_code": [100, 100],
+             "marking_code": [102, 102],
+             "faa_study_number": [104, 117],
+             "action": [119, 119],
+             "julian_date": [121, 127]
+           }
+     }'
 );
