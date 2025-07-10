@@ -1,12 +1,14 @@
-# [Project structure](#project_structure)
-# [Database setup](#database_setup)
-## [Notes](#database_setup_notes)
-## [Auxiliary scripts](#aux_scripts)
-### [load_countries_states.py](#load_ctry_states)
-### [obstacle_types.py](#obstacle_types)
-## [Setup with alembic](#setup_alembic)
-## [Setup with SQL scripts](#setup_sql)
-# [Plugin installation](#plugin_install)
+# Table of Contents
+ 
+* [Project structure](#project_structure)
+* [Database setup](#database_setup)
+  * [Notes](#database_setup_notes)
+  * [Auxiliary scripts](#aux_scripts)
+    * [load_countries_states.py](#load_ctry_states)
+    * [obstacle_types.py](#obstacle_types)
+  * [Setup with alembic](#setup_alembic)
+  * [Setup with SQL scripts](#setup_sql)
+* [Plugin installation](#plugin_install)
 
 # Project structure <a name=project_structure>
 
