@@ -78,7 +78,7 @@ class FAADOFManagerDialog(QDialog, FORM_CLASS):
         self.layers = layers
         self.lineEditObstacleIdent.editingFinished.connect(self.load_single_obstacle)
         self.pushButtonInsert.clicked.connect(self.insert_single_obstacle)
-        self.mQgsFileWidgetSourceFile.setFilter("*.csv, *.dat")
+        self.mQgsFileWidgetSourceFile.setFilter("*.csv;;*.dat")
         self.pushButtonLoadData.clicked.connect(self.load_dof_data)
 
     def set_single_mode_drop_down_lists(self) -> None:
