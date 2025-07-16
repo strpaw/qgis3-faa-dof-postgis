@@ -1,12 +1,20 @@
-# [Project structure](#project_structure)
-# [Database setup](#database_setup)
-## [Notes](#database_setup_notes)
-## [Auxiliary scripts](#aux_scripts)
-### [load_countries_states.py](#load_ctry_states)
-### [obstacle_types.py](#obstacle_types)
-## [Setup with alembic](#setup_alembic)
-## [Setup with SQL scripts](#setup_sql)
-# [Plugin installation](#plugin_install)
+# Table of Contents
+ 
+* [Project structure](#project_structure)
+* [Database setup](#database_setup)
+  * [Notes](#database_setup_notes)
+  * [Auxiliary scripts](#aux_scripts)
+    * [load_countries_states.py](#load_ctry_states)
+    * [obstacle_types.py](#obstacle_types)
+  * [Setup with alembic](#setup_alembic)
+  * [Setup with SQL scripts](#setup_sql)
+* [Plugin installation](#plugin_install)
+* [Plugin usage](#plugin_usage)
+  * [Run plugin](#run_plugin)
+  * [General overview](#general_overview)
+  * [Insert single obstacle](#insert_single_obstacle)
+  * [Update single obstacle](#update_single_obstacle)
+  * [Import obstacles from Digital Obstacle File (DOF) csv/dat format](#import_dof)
 
 # Project structure <a name=project_structure>
 
@@ -146,3 +154,86 @@ Execute SQL scripts, using for example pgAdmin:
 
 6. Select ZIP file created in the step 3 and press `Install Plugin` button:
 ![Select ZIP and install](/doc_img/plugin_installation/3_select_install.png)
+
+# Plugin usage <a name=plugin_usage>
+
+> Prerequisites 
+> * load tables from created database:
+>   * obstacle
+>   * us_state
+>   * country
+>   
+>   ![Required layers](/doc_img/plugin_usage/required_layers.png)
+> 
+>   If layer not loaded into QGIS project following error message will be shown:
+>  ![Error: layers not loaded](/doc_img/plugin_usage/error_layers_not_loaded.png)
+
+## Run plugin <a name=run_plugin>
+
+To open plugin:
+
+Main menu > Plugins > FAA DOF Manager > FAA DOF Manager
+
+If required layers are loaded plugin will be opened:
+
+![Empty plugin dialog](/doc_img/plugin_usage/empty_plugin_dialog.png)
+
+> Drop-down list values are populated based on the data fetched from database
+> Country/state example:
+> ![Country/state values example](/doc_img/plugin_usage/country_us_state_values.png)
+> 
+> Horizontal accuracy example:
+> 
+> ![Horizontal accuracy values example](/doc_img/plugin_usage/h_acc_values.png)
+> 
+
+## General overview <a name=general_overview>
+
+There are two modes supported by plugins
+* single obstacle: insert/update
+* load data: import obstacles from DOF csv/dat format
+
+Plugin write logs into `faa_dof_manager.txt` files located in:
+`<QGIS plugin installation dir>faa_dof_manager\logs`
+
+Logs can be accessed via `Open logs` button.
+
+## Insert single obstacle <a name=insert_single_obstacle>
+
+1. Open plugin
+2. Select `Single obstacle` tab
+3. Enter obstacle data
+4. Press `Insert` button
+
+## Update single obstacle <a name=update_single_obstacle>
+
+1. Open plugin
+2. Select `Single obstacle` tab
+3. Enter `Obstacle Ident` and select `Country/state` value. If obstacle with
+entered ident for specified Country/state exists in database its values will be fetched from database
+and plugin dialog controls will be populated with those values.
+4. Enter/set new values for obstacle
+5. Press `Update` button
+
+## Import obstacles from Digital Obstacle File (DOF) csv/dat format <a name=import_dof>
+
+1. Open plugin
+2. Select `Load data` tab
+3. Open `Select file` dialog from plugin
+4. Choose file type (csv or dat)
+5. Choose file to load
+6. Press `Load` button
+
+![Load data](/doc_img/plugin_usage/load_dof_select_file.png)
+
+If data loading failed `dof.import_obstacle` and message is shown:
+
+![Load data error](/doc_img/plugin_usage/load_dof_error.png)
+
+Press `Open logs` button to open log and see details about error.
+
+If data loading was successful message is shown:
+
+![Load data error](/doc_img/plugin_usage/load_dof_ok.png)
+
+Press `Open logs` button to open log and see details  about number of imported rows.
