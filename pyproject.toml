@@ -1,0 +1,30 @@
+[project]
+name = "qgis3-faa-dof-postgis"
+description = "QGIS plugin to manage obstacles from DOF (Digitial Obstacle File) provided by FAA (Federal Aviation Administration) using PostGIS extension"
+authors = [
+    {name = "Paweł Strzelewicz"}
+]
+readme = "README.md"
+requires-python = "^3.9"
+dependencies = [
+    "alembic (>=1.13.2,<2.0.0)",
+    "geoalchemy2 (>=0.15.2,<0.16.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "psycopg2 (>=2.9.9,<3.0.0)",
+    "pandas (>=2.2.3,<3.0.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "dacite (>=1.8.1,<2.0.0)",
+    "geopandas (>=1.0.1,<2.0.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pylint (>=3.3.1,<4.0.0)"
+]
